@@ -69,7 +69,7 @@ def test_embed(embedding_creation):
 def test_con_pool(conv2d_maxpool):
     #sentence length, embbed size, number channels
     test_x = tf.placeholder(tf.float32, [None, 56, 128,1])
-    test_num_filters = 3
+    test_num_filters = 128
     test_filter_size = 3
 
     conv2d_maxpool_out = conv2d_maxpool(test_x, test_num_filters, test_filter_size)
@@ -104,13 +104,39 @@ def test_flatten(flatten):
     _print_success_message()
 
 
-def test_compute_output(calculate_output):
+def test_output(output):
     test_x = tf.placeholder(tf.float32, [None, 128])
     test_num_outputs = 40
-    fc_out, predictions = calculate_output(test_x, test_num_outputs)
+    #, l2_w, l2_b
+    fc_out = output(test_x, test_num_outputs)
 
     assert fc_out.get_shape().as_list() == [None, 40],\
         'Incorrect Shape.  Found {} shape'.format(fc_out.get_shape().as_list())
+
+    _print_success_message()
+
+def test_conv_net(conv_net):
+    test_x = tf.placeholder(tf.int32, [None, 128])
+    test_k = tf.placeholder(tf.float32)
+    #, l2_w, l2_b 
+    logits_out= conv_net(test_x, test_k)
+
+    assert logits_out.get_shape().as_list() == [None, 2],\
+        'Incorrect Model Output.  Found {}'.format(logits_out.get_shape().as_list())
+
+    print('Neural Network Built!')
+
+def test_train_nn(train_neural_network):
+    mock_session = tf.Session()
+    test_x = np.random.rand(128, 256)
+    test_y = np.random.rand(128, 2)
+    test_k = np.random.rand(1)
+    test_optimizer = tf.train.AdamOptimizer()
+
+    mock_session.run = MagicMock()
+    train_neural_network(mock_session, test_optimizer, test_k, test_x, test_y)
+
+    assert mock_session.run.called, 'Session not used'
 
     _print_success_message()
 
