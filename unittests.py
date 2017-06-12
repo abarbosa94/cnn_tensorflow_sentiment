@@ -54,8 +54,8 @@ def test_nn_keep_prob_inputs(neural_net_keep_prob_input):
     print('Keep Prob Tests Passed.')
 
 def test_embed(embedding_creation):
-    vocab_size = 20000
-    embedding_size = 128
+    vocab_size = 18758
+    embedding_size = 300
     sequence_length = 56
     channels = 1
     input_x = tf.placeholder(tf.int32, [None, sequence_length], name="input_x")
@@ -107,8 +107,8 @@ def test_flatten(flatten):
 def test_output(output):
     test_x = tf.placeholder(tf.float32, [None, 128])
     test_num_outputs = 40
-    #, l2_w, l2_b
-    fc_out = output(test_x, test_num_outputs)
+
+    fc_out, l2_w, l2_b = output(test_x, test_num_outputs)
 
     assert fc_out.get_shape().as_list() == [None, 40],\
         'Incorrect Shape.  Found {} shape'.format(fc_out.get_shape().as_list())
@@ -118,8 +118,8 @@ def test_output(output):
 def test_conv_net(conv_net):
     test_x = tf.placeholder(tf.int32, [None, 128])
     test_k = tf.placeholder(tf.float32)
-    #, l2_w, l2_b 
-    logits_out= conv_net(test_x, test_k)
+
+    logits_out, l2_w, l2_b= conv_net(test_x, test_k)
 
     assert logits_out.get_shape().as_list() == [None, 2],\
         'Incorrect Model Output.  Found {}'.format(logits_out.get_shape().as_list())
