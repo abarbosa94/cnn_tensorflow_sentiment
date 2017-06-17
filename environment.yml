@@ -1,4 +1,4 @@
-name: dlnd
+name: cnn_sentiment
 channels: !!python/tuple
 - defaults
 dependencies:
@@ -81,7 +81,6 @@ dependencies:
   - prompt-toolkit==1.0.14
   - protobuf==3.3.0
   - smart-open==1.5.2
-  - tensorflow==1.1.0
   - tqdm==4.11.2
   - werkzeug==0.12.2
 prefix: /Users/Developer/anaconda3/envs/dlnd
